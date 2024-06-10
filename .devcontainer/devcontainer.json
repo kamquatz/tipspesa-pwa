@@ -1,0 +1,22 @@
+{
+    "name": "tipspesa-pwa",
+    "dockerFile": "Dockerfile",
+    "appPort": [
+        "8080:80"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "github.vscode-github-actions",
+                "bmewburn.vscode-intelephense-client"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux#": "/bin/bash"
+            }
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/var/www/html,type=bind"
+    ]
+}
