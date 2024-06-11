@@ -18,36 +18,13 @@ try {
 
 
 // Establish a connection to the PostgreSQL database
-$dsn = "pgsql:host=$db_host;port=$db_port;dbname=$db_name;user=$db_user;password=$db_password";
+// $dsn = "pgsql:host=$db_host;port=$db_port;dbname=$db_name;user=$db_user;password=$db_password";
 
-
-$conn = pg_connect($connection_string);
-try {
-    $conn = new PDO($dsn);
-} catch (PDOException $e) {
-    die('Connection failed: ' . $e->getMessage());
-}
-
-function getStatus($prediction, $result)
-{
-    $status = '';
-
-    if (preg_match('/\d/', $result)) {
-        $results = explode(" - ", $result);
-        switch ($prediction) {
-            case 'OV1.5':
-                $status = ((int) $results[0] + (int) $results[1]) > 1 ? 'WON' : 'LOST';
-                break;
-            default:
-                // Handle other cases here
-                break;
-        }
-    } else {
-        // Handle error case here
-    }
-
-    return $status;
-}
+// try {
+//     $conn = new PDO($dsn);
+// } catch (PDOException $e) {
+//     die('Connection failed: ' . $e->getMessage());
+// }
 
 
 function get_background_color($perc)
