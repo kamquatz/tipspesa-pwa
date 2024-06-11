@@ -1,6 +1,3 @@
-<script>
-    $redirect = false;
-</script>
 <?php
 include './includes/config.php';
 $premium = 'mobile-nav__item--active';

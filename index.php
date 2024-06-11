@@ -4,33 +4,6 @@ $today = 'mobile-nav__item--active';
 $page = '';
 $count = 0;
 
-function updatePostedMatch($conn, $match_id)
-{
-    $sqlup = <<<SQL
-        UPDATE matches
-        SET posted=1
-        WHERE match_id=?
-SQL;
-    if ($stmtup = $conn->prepare($sqlup)) {
-        $stmtup->bindParam(1, $match_id, PDO::PARAM_STR);
-        $stmtup->execute();
-    }
-}
-
-function get_background_color($perc){
-    if($perc == 100){
-        return 'green';
-    }
-    elseif($perc > 90){
-        return 'greenyellow';
-    }
-    elseif($perc > 75){
-        return 'orange';
-    }
-    else{
-        return 'red';
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +32,7 @@ function get_background_color($perc){
                         over_1_5_home_perc,over_1_5_away_perc,
                         over_2_5_home_perc,over_2_5_away_perc,
                         over_3_5_home_perc,over_3_5_away_perc,overall_prob,
-                        home_results,away_results,status
+                        CONCAT(home_results,' - ',away_results) AS results, status
                     FROM matches
                     WHERE DATE(kickoff)=CURRENT_DATE 
                     ORDER BY kickoff, home_team
@@ -110,25 +83,25 @@ SQL;
                                     <small class="col-3 col-sm-3 text-center"><?php echo ($match['average_goals_home']+$match['average_goals_away'])/2; ?></small>
                                 </div> -->
                                 <div class="row">
-                                    <small class="col-3 col-sm-3 text-left">Over 0.5</small>
+                                    <small class="col-3 col-sm-3 text-left" style="background: lightblue">Over 0.5</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_0_5_home_perc'])) ?>"><?php echo $match['over_0_5_home_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color($match['over_0_5_away_perc']) ?>"><?php echo $match['over_0_5_away_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_0_5_home_perc']+$match['over_0_5_away_perc'])/2) ?>"><?php echo ($match['over_0_5_home_perc']+$match['over_0_5_away_perc'])/2; ?>%</small>
                                 </div>
                                 <div class="row">
-                                    <small class="col-3 col-sm-3 text-left">Over 1.5</small>
+                                    <small class="col-3 col-sm-3 text-left" style="background: powderblue">Over 1.5</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_1_5_home_perc'])) ?>"><?php echo $match['over_1_5_home_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color($match['over_1_5_away_perc']) ?>"><?php echo $match['over_1_5_away_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_1_5_home_perc']+$match['over_1_5_away_perc'])/2) ?>"><?php echo ($match['over_1_5_home_perc']+$match['over_1_5_away_perc'])/2; ?>%</small>
                                 </div>
                                 <div class="row">
-                                    <small class="col-3 col-sm-3 text-left">Over 2.5</small>
+                                    <small class="col-3 col-sm-3 text-left" style="background: lightskyblue">Over 2.5</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_2_5_home_perc'])) ?>"><?php echo $match['over_2_5_home_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color($match['over_2_5_away_perc']) ?>"><?php echo $match['over_2_5_away_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_2_5_home_perc']+$match['over_2_5_away_perc'])/2) ?>"><?php echo ($match['over_2_5_home_perc']+$match['over_2_5_away_perc'])/2; ?>%</small>
                                 </div>
                                 <div class="row">
-                                    <small class="col-3 col-sm-3 text-left">Over 3.5</small>
+                                    <small class="col-3 col-sm-3 text-left" style="background: skyblue">Over 3.5</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_3_5_home_perc'])) ?>"><?php echo $match['over_3_5_home_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color($match['over_3_5_away_perc']) ?>"><?php echo $match['over_3_5_away_perc']; ?>%</small>
                                     <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_3_5_home_perc']+$match['over_3_5_away_perc'])/2) ?>"><?php echo ($match['over_3_5_home_perc']+$match['over_3_5_away_perc'])/2; ?>%</small>
@@ -137,7 +110,6 @@ SQL;
                         </div>
                     </div>
             <?php
-                   # updatePostedMatch($conn, $match['match_id']);
                 }
             }
             ?>

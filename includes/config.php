@@ -17,7 +17,8 @@ try {
     die('Connection failed: ' . $e->getMessage());
 }
 
-function getStatus($prediction, $result) {
+function getStatus($prediction, $result)
+{
     $status = '';
 
     if (preg_match('/\d/', $result)) {
@@ -35,4 +36,30 @@ function getStatus($prediction, $result) {
     }
 
     return $status;
+}
+
+
+function get_background_color($perc)
+{
+    if ($perc == 100) {
+        return 'green';
+    } elseif ($perc >= 90) {
+        return 'limegreen';
+    } elseif ($perc >= 80) {
+        return 'lime';
+    } elseif ($perc >= 70) {
+        return 'lawngreen';
+    } elseif ($perc >= 60) {
+        return 'yellow';
+    } elseif ($perc >= 50) {
+        return 'orange';
+    } elseif ($perc >= 40) {
+        return 'darkorange';
+    } elseif ($perc >= 30) {
+        return 'tomato';
+    } elseif ($perc >= 20) {
+        return 'orangered';
+    } else {
+        return 'red';
+    }
 }
