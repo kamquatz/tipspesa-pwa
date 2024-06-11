@@ -72,11 +72,11 @@ SQL;
                                 <div class="row">
                                     <small class="col-5 col-sm-7 text-left"><?php echo $match['kickoff']; ?></small>
                                     <small class="col-2 col-sm-2 text-center"><b>
-                                            <?php echo strpos($match['status'], "'") ? '<span class="blinking-text text-success">LIVE</span><br/>' . $match['results'] : $match['overall_prob'] . '%'; ?></b>
+                                            <?php echo $match['status'] ? '<span class="blinking-text text-success">LIVE</span><br/>' . $match['results'] : $match['overall_prob'] . '%'; ?></b>
                                     </small>
                                     <small class="col-5 col-sm-3 text-right"><b><?php echo $match['prediction']; ?></b><br />
                                         <sub class="col-12 col-sm-12 text-center <?php echo strtolower($match['status']); ?>"><b><i class="material-icons"><?php echo $match['status'] == 'LOST' ? 'do_not_disturb_on' : ($match['status'] == 'WON' ? 'check_circle' : ''); ?></i>
-                                                <?php echo strpos($match['status'], "'") ? $match['status'] : ''; ?></b></sub>
+                                                <?php echo $match['status']; ?></b></sub>
                                     </small>
                                 </div>
                                 <div class="text-center">
