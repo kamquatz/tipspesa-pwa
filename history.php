@@ -37,33 +37,50 @@ $page = 'history';
                     ORDER BY kickoff DESC, home_team
 SQL;
 
-            if ($stmt = $conn->prepare($sql)) {
-                $stmt->execute();
-                $matches = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $count = $won = 0;
+            try {
+                // Establish a connection to PostgreSQL
+                $conn = pg_connect($connection_string);
+            } catch (Exception $e) {
+                // Handle exceptions
+                echo $e->getMessage();
+            }
 
-                // Loop through the result set
-                foreach ($matches as $match) {
-                    $count++;
-                    $won += ($match['status'] == 'LOST' ? 0 : 1);
+            if ($conn) {
+
+                $result = pg_query($conn, $sql);
+
+                if ($result) {
+
+                    $matches = pg_fetch_all($result);
+                    $count = $won = 0;
+
+                    // Loop through the result set
+                    foreach ($matches as $match) {
+                        $count++;
+                        $won += ($match['status'] == 'LOST' ? 0 : 1);
             ?>
-                    <div class="col-12 col-sm-4 text-center">
-                        <small><?php echo $match['home_team'] . ' vs ' . $match['away_team']; ?></small>
-                        <div class="row">
-                            <small class="col-5 col-sm-5 text-left"><?php echo $match['kickoff']; ?></small>
-                            <small class="col-2 col-sm-2 text-center"><b><?php echo $match['results']; ?></b></small>
-                            <small class="col-5 col-sm-5 text-right"><b><?php echo str_replace("*", '<sup class="text-danger">HOT</sup>', $match['prediction']); ?></b></small>
-                            <small class="col-5 col-sm-5 text-left"></small>
-                            <small class="col-12 col-sm-2 text-center <?php echo strtolower($match['status']); ?>"><b><i class="material-icons"><?php echo $match['status'] == 'LOST' ? 'do_not_disturb_on' : 'check_circle'; ?></i></b></small>
-                            <small class="col-5 col-sm-5 text-right"><?php echo $match['overall_prob']; ?>%</small>
+                        <div class="col-12 col-sm-4 text-center">
+                            <small><?php echo $match['home_team'] . ' vs ' . $match['away_team']; ?></small>
+                            <div class="row">
+                                <small class="col-5 col-sm-5 text-left"><?php echo $match['kickoff']; ?></small>
+                                <small class="col-2 col-sm-2 text-center"><b><?php echo $match['results']; ?></b></small>
+                                <small class="col-5 col-sm-5 text-right"><b><?php echo str_replace("*", '<sup class="text-danger">HOT</sup>', $match['prediction']); ?></b></small>
+                                <small class="col-5 col-sm-5 text-left"></small>
+                                <small class="col-12 col-sm-2 text-center <?php echo strtolower($match['status']); ?>"><b><i class="material-icons"><?php echo $match['status'] == 'LOST' ? 'do_not_disturb_on' : 'check_circle'; ?></i></b></small>
+                                <small class="col-5 col-sm-5 text-right"><?php echo $match['overall_prob']; ?>%</small>
+                            </div>
                         </div>
-                    </div>
-                    <hr class="my-2" />
+                        <hr class="my-2" />
             <?php
+
+                    }
+                    $winPerc = $count > 0 ? (100 * $won / $count) : 100;
+                    // Close the connection
+                    pg_close($conn);
                 }
-                $winPerc = $count > 0 ? (100 * $won / $count) : 100;
             }
             ?>
+            
         </div>
     </div>
 
