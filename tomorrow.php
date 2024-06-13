@@ -1,5 +1,7 @@
 <?php
 include './includes/config.php';
+include './includes/functions.php';
+
 $tomorrow = 'mobile-nav__item--active';
 $page = 'tomorrow';
 $count = 0;
@@ -111,7 +113,7 @@ SQL;
                                         <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color($match['over_3_5_away_perc']) ?>"><?php echo $match['over_3_5_away_perc']; ?>%</small>
                                         <small class="col-3 col-sm-3 text-center" style="background: <?php echo get_background_color(($match['over_3_5_home_perc'] + $match['over_3_5_away_perc']) / 2) ?>"><?php echo ($match['over_3_5_home_perc'] + $match['over_3_5_away_perc']) / 2; ?>%</small>
                                     </div>
-                                    <div class="text-center">
+                                    <div class="text-left">
                                         <small>
                                             <?php echo $match['analysis']; ?>
                                         </small>
